@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Final Exam Preparation Notes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS variables for theme and font size */
+        :root {
+            --bg-color: #f4f4f4; /* Default light gray */
+            --text-color: #333; /* Default dark text */
+            --container-bg-color: #fff; /* Default white container */
+            --primary-color: #0056b3; /* Default blue for headings */
+            --secondary-color: #004085; /* Darker blue */
+            --code-bg-color: #eef; /* Default light blue for code */
+            --code-text-color: #000; /* Default black for code text */
+            --base-font-size: 1rem; /* Default font size */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: var(--base-font-size);
+            transition: background-color 0.3s ease, color 0.3s ease, font-size 0.3s ease;
+        }
+
+        .container {
+            background-color: var(--container-bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+
+        .code-block {
+            background-color: var(--code-bg-color);
+            color: var(--code-text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Specific theme classes */
+        body.theme-white {
+            --bg-color: #f4f4f4;
+            --text-color: #333;
+            --container-bg-color: #fff;
+            --primary-color: #0056b3;
+            --secondary-color: #004085;
+            --code-bg-color: #eef;
+            --code-text-color: #000;
+        }
+
+        body.theme-dark {
+            --bg-color: #1a202c; /* dark gray */
+            --text-color: #e2e8f0; /* light gray */
+            --container-bg-color: #2d3748; /* darker gray */
+            --primary-color: #63b3ed; /* light blue */
+            --secondary-color: #4299e1; /* blue */
+            --code-bg-color: #4a5568;
+            --code-text-color: #e2e8f0;
+        }
+
+        body.theme-brown {
+            --bg-color: #f5deb3; /* wheat */
+            --text-color: #5a4a42; /* dark brown */
+            --container-bg-color: #fdf5e6; /* antique white */
+            --primary-color: #8b4513; /* saddle brown */
+            --secondary-color: #a0522d; /* sienna */
+            --code-bg-color: #fff8dc; /* cornsilk */
+            --code-text-color: #5a4a42;
+        }
+
+        body.theme-yellow {
+            --bg-color: #fffacd; /* lemon chiffon */
+            --text-color: #6b460c; /* dark yellow-brown */
+            --container-bg-color: #ffffe0; /* light yellow */
+            --primary-color: #d69e2e; /* dark orange-yellow */
+            --secondary-color: #b7791f; /* darker orange-yellow */
+            --code-bg-color: #fdfae2;
+            --code-text-color: #6b460c;
+        }
+
+        body.theme-gray {
+            --bg-color: #e2e8f0; /* light gray */
+            --text-color: #2d3748; /* dark gray */
+            --container-bg-color: #cbd5e0; /* medium gray */
+            --primary-color: #4a5568; /* dark gray */
+            --secondary-color: #2d3748; /* darker gray */
+            --code-bg-color: #a0aec0;
+            --code-text-color: #2d3748;
+        }
+
+        /* Settings button */
+        .settings-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #0056b3;
+            color: white;
+            border-radius: 9999px; /* full rounded */
+            padding: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            background-color: #004085;
+        }
+
+        /* Settings Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background-color: var(--container-bg-color);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* Quiz styles */
+        .quiz-option {
+            @apply block w-full text-left p-3 border border-gray-300 rounded-md mb-2 cursor-pointer transition-all duration-200;
+        }
+        .quiz-option:hover {
+            @apply bg-blue-50 border-blue-400;
+        }
+        .quiz-option.selected {
+            @apply bg-blue-200 border-blue-600 ring-2 ring-blue-500;
+        }
+        .quiz-option.correct {
+            @apply bg-green-200 border-green-600;
+        }
+        .quiz-option.incorrect {
+            @apply bg-red-200 border-red-600;
+        }
+    </style>
+</head>
+<body class="font-sans leading-relaxed text-gray-800 bg-gray-100 p-5 theme-white" id="main-body">
+
+    <!-- Settings Button -->
+    <button class="settings-btn" id="settings-btn" aria-label="Open Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.525-1.077 2.15-1.077 2.675 0l.5.996a1 1 0 001.275.632l1.018-.162a1 1 0 011.09.434l.325.647a1 1 0 01-.137 1.132l-.666.666a1 1 0 00-.236.703l.053 1.054a1 1 0 00.99 1.116h1.054a1 1 0 011.116 1l.053 1.054a1 1 0 00-.236.703l-.666.666a1 1 0 01-.137 1.132l.325.647a1 1 0 011.09.434l1.018-.162a1 1 0 001.275.632l.5.996c.525 1.077-.137 2.317-1.132 2.317h-1.054a1 1 0 00-.99 1.116l-.053 1.054a1 1 0 01-1.116 1l-.647.325a1 1 0 01-.434 1.09l-.647.325a1 1 0 01-1.132-.137l-.666-.666a1 1 0 00-.703-.236l-1.054.053a1 1 0 00-1.116.99h-1.054a1 1 0 01-1 1.116l-1.054.053a1 1 0 00-.703-.236l-.666-.666a1 1 0 01-1.132-.137l-.647.325a1 1 0 01-.434 1.09l-.647.325a1 1 0 01-1.132-.137l-.666-.666a1 1 0 00-.703-.236l-1.054.053a1 1 0 00-1.116.99h-1.054a1 1 0 01-1 1.116l-1.054.053a1 1 0 00-.703-.236l-.666-.666a1 1 0 01-1.132-.137l-.325-.647a1 1 0 01-.434-1.09l-.647-.325a1 1 0 01-.137-1.132l.666-.666a1 1 0 00.236-.703l-.053-1.054a1 1 0 00-.99-1.116h-1.054a1 1 0 01-1.116-1l-.053-1.054a1 1 0 00.236-.703l.666-.666a1 1 0 01.137-1.132l-.325-.647a1 1 0 01-1.09-.434l-1.018.162a1 1 0 00-1.275-.632l-.5-.996c-.525-1.077.137-2.317 1.132-2.317h1.054a1 1 0 00.99-1.116l.053-1.054a1 1 0 011.116-1l.647-.325a1 1 0 01.434-1.09l.647-.325a1 1 0 011.132.137l.666.666a1 1 0 00.703.236l1.054-.053a1 1 0 001.116-.99h1.054a1 1 0 011-1.116l1.054-.053a1 1 0 00.703.236l.666.666a1 1 0 011.132.137l.647-.325z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+    </button>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="close-btn" id="close-settings-btn">&times;</button>
+            <h3 class="text-xl font-bold mb-4">Settings</h3>
+
+            <div class="mb-4">
+                <label for="font-size-slider" class="block text-sm font-medium mb-2">Font Size:</label>
+                <input type="range" id="font-size-slider" min="0.8" max="1.2" step="0.1" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                <span id="current-font-size" class="text-sm mt-1 block">Normal</span>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Background Color:</label>
+                <div class="flex flex-wrap gap-2">
+                    <button class="px-4 py-2 rounded-md bg-gray-100 text-gray-800 border border-gray-300" data-theme="white">White</button>
+                    <button class="px-4 py-2 rounded-md bg-gray-800 text-white" data-theme="dark">Dark</button>
+                    <button class="px-4 py-2 rounded-md bg-yellow-800 text-white" data-theme="brown">Brown</button>
+                    <button class="px-4 py-2 rounded-md bg-yellow-200 text-yellow-900" data-theme="yellow">Yellow</button>
+                    <button class="px-4 py-2 rounded-md bg-gray-400 text-gray-900" data-theme="gray">Gray</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-4xl font-extrabold text-center text-blue-700 mb-8 sm:text-5xl md:text-6xl">Comprehensive Java Exam Preparation Notes</h1>
+
+        <p class="mb-6 text-base sm:text-lg">This document covers essential topics for your Java final exam, focusing on GUI development with JavaFX, event handling, and fundamental OOP concepts like interfaces and multithreading.</p>
+
+        <h2 class="text-2xl font-bold text-blue-600 border-b-2 border-gray-200 pb-3 mb-6 mt-8 sm:text-3xl md:mt-10">1. JavaFX Basics (Based on Chapters 14 & 16)</h2>
+        <p class="mb-4 text-sm sm:text-base">JavaFX is a modern framework for developing Graphical User Interface (GUI) programs in Java, replacing older technologies like Swing and AWT.</p>
+
+        <h3 class="text-xl font-semibold text-blue-500 mb-3 sm:text-2xl">Key Concepts:</h3>
+        <ul class="list-disc ml-6 space-y-2 text-sm sm:text-base">
+            <li><strong class="text-blue-700">GUI vs. Traditional Programs:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Traditional (Procedural) Programming:</strong> Code executes sequentially, step-by-step.</li>
+                    <li><strong class="font-medium">GUI (Event-Driven) Programming:</strong> Code execution is triggered by events (user actions like button clicks, mouse movements, keystrokes).</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Core JavaFX Structure:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li>Every JavaFX application must extend the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Application</code> class.</li>
+                    <li>The primary entry point for a JavaFX application is the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">start(Stage primaryStage)</code> method, which is automatically invoked by the JavaFX runtime.</li>
+                    <li><strong class="font-medium">Stage:</strong> Represents the main window of a JavaFX application.</li>
+                    <li><strong class="font-medium">Scene:</strong> A container for all UI elements (nodes) that is placed onto a <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Stage</code>. Think of it as the content area of the window.</li>
+                    <li><strong class="font-medium">Node:</strong> The base class for all graphical elements in the JavaFX scene graph. Each node has properties defining its appearance, layout, and behavior.</li>
+                    <li><strong class="font-medium">Parent:</strong> A type of <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Node</code> that can contain other nodes (e.g., <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Pane</code> and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Control</code>).</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Panes (Layout Containers):</strong> Panes are specialized nodes used to organize other nodes within a scene. They provide different layout strategies.
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Pane</code>: The base class for all layout panes, offering a <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">getChildren()</code> method to manage nodes.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">StackPane</code>: Places nodes on top of each other, centered.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">FlowPane</code>: Arranges nodes in a row (horizontal) or column (vertical).</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">GridPane</code>: Arranges nodes in a 2D grid.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">BorderPane</code>: Places nodes in five regions: top, right, bottom, left, and center.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">HBox</code>: Arranges nodes in a single horizontal row.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">VBox</code>: Arranges nodes in a single vertical column.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">UI Controls:</strong> Interactive elements that users can interact with.
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Label</code>: Used to display a short text, a graphic, or both. Often used to label other controls. Properties like <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">alignment</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">graphic</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">textFill</code>, and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">underline</code> can be set.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Button</code>: Triggers an <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ActionEvent</code> when clicked.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">CheckBox</code>: Allows users to make a selection (checked or unchecked). Inherits properties from <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ButtonBase</code> and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Labeled</code>.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">RadioButton</code>: Enables users to choose a single item from a group. They resemble <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">CheckBoxes</code> but display a filled or blank circle. They are typically grouped using <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ToggleGroup</code>.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">TextField</code>: Used for single-line text input or display.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">TextArea</code>: Allows multi-line text input.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ComboBox</code>: A dropdown list allowing users to choose an item.
+                        <ul class="list-square ml-6 mt-1 space-y-1 text-xs">
+                            <li>Works with <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ObservableList</code> for items, which automatically updates the UI when the list changes. <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">FXCollections.observableArrayList()</code> is used to create such lists.</li>
+                        </ul>
+                    </li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ListView</code>: Similar to <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ComboBox</code> but can display multiple items and allow single or multiple selections.
+                        <ul class="list-square ml-6 mt-1 space-y-1 text-xs">
+                            <li>Uses <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ObservableList</code> for items and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">selectedItemProperty()</code> to track selection changes.</li>
+                        </ul>
+                    </li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ScrollBar</code>: Allows users to select a value from a range, appearing horizontally or vertically. Key properties include <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">min</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">max</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">value</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">blockIncrement</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">unitIncrement</code>, and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">orientation</code>.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Slider</code>: Similar to <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ScrollBar</code>, but <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Slider</code> has more properties and can appear in many forms. Key properties include <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">min</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">max</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">value</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">majorTickUnit</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">minorTickCount</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">showTickLabels</code>, and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">showTickMarks</code>.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Shapes:</strong> JavaFX provides classes for drawing various shapes.
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Line</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Circle</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Rectangle</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Ellipse</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Arc</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Polygon</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Polyline</code>.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Text</code>: For displaying text.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Binding Properties:</strong> A new concept in JavaFX that enables a target object to be bound to a source object. If the value in the source object changes, the target property is also changed automatically.</li>
+            <li><strong class="text-blue-700">Image and ImageView:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Image</code>: Used to load images from files or URLs.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ImageView</code>: Used to display an <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Image</code> object.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Color and Font:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Color</code> class: Used to create colors using red, green, blue, and opacity values.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Font</code> class: Used to create and manage fonts, specifying size, name, and family.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-blue-600 border-b-2 border-gray-200 pb-3 mb-6 mt-8 sm:text-3xl md:mt-10">2. Event-Driven Programming and Animations (Chapter 15)</h2>
+        <p class="mb-4 text-sm sm:text-base">Event-driven programming is fundamental to GUI applications, where the program reacts to user interactions or system events.</p>
+
+        <h3 class="text-xl font-semibold text-blue-500 mb-3 sm:text-2xl">Key Concepts:</h3>
+        <ul class="list-disc ml-6 space-y-2 text-sm sm:text-base">
+            <li><strong class="text-blue-700">Events, Event Sources, and Event Handlers:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Event:</strong> A signal to the program indicating that something has occurred (e.g., mouse click, key press).</li>
+                    <li><strong class="font-medium">Event Source Object:</strong> The GUI component that generates the event (e.g., a <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Button</code> fires an <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ActionEvent</code>).</li>
+                    <li><strong class="font-medium">Event Handler (Listener) Object:</strong> Contains the code (a method) that processes the event. It "listens" for specific events.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Delegation Event Model:</strong>
+                <ol class="list-decimal ml-6 mt-1 space-y-1 text-sm">
+                    <li>An event source object (e.g., a button) fires an event.</li>
+                    <li>An event object is created, containing information pertinent to the event. You can use <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">getSource()</code> to identify the source object.</li>
+                    <li>The event is delivered to a registered listener object.</li>
+                    <li>The listener object's <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">handle()</code> method (or equivalent) is invoked to process the event.</li>
+                </ol>
+            </li>
+            <li><strong class="text-blue-700"><code>EventHandler&lt;T&gt;</code> Interface:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li>This is a functional interface in JavaFX with a single abstract method, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">handle(T event)</code>.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">T</code> is a generic type parameter, extending <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Event</code>, specifying the type of event the handler will process (e.g., <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">ActionEvent</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">MouseEvent</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">KeyEvent</code>).</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Ways to Define Event Handlers:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Named Inner Classes:</strong> Define a separate named class inside the main application class that implements <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">EventHandler&lt;T&gt;</code>. This is useful if the handler logic is complex or needs to be reused within the main class.</li>
+                    <li><strong class="font-medium">Anonymous Inner Classes:</strong> A local class without a name, defined and instantiated in a single step. Used to provide a quick, one-time implementation of an interface or a subclass without explicitly declaring a named class. It must implement all abstract methods in the superclass or in the interface.</li>
+                    <li><strong class="font-medium">Lambda Expressions:</strong> A new feature in Java 8. Lambda expressions can be viewed as an anonymous method with a concise syntax.
+                        <ul class="list-square ml-6 mt-1 space-y-1 text-xs">
+                            <li>Syntax: <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">(parameters) -> expression</code> or <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">(parameters) -> { statements; }</code>.</li>
+                            <li>Parameters' data types can be inferred. Parentheses can be omitted if there is only one parameter without an explicit data type.</li>
+                            <li>Local variables that are accessed from within an anonymous inner class (or lambda expression) must be final.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Listeners for Observable Objects:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li>You can add a listener to process a value change in an observable object.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Observable</code> interface: An instance of <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Observable</code> is known as an observable object, which contains the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">addListener(InvalidationListener listener)</code> method for adding a listener.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">InvalidationListener</code>: This interface uses the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">invalidated(Observable o)</code> method to handle the property value change. It indicates that the value is "stale" but doesn't provide old/new values explicitly.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">DoubleProperty</code> and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">SimpleDoubleProperty</code>: <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">DoubleProperty</code> is an observable wrapper for a double value, behaving like a double with added event-handling capabilities. <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">SimpleDoubleProperty</code> is a concrete implementation of <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">DoubleProperty</code>.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Animations:</strong> JavaFX provides the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Animation</code> class with the core functionality for all animations.
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Animation</code> class: (e.g., <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">pause()</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">play()</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">stop()</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">autoReverse</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">cycleCount</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">rate</code>).</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PathTransition</code>: Animates the move of a target node along the outline of a shape.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">FadeTransition</code>: Animates the change of the opacity in a node over a given time.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Timeline</code>: A more general animation class that can be used to program any animation using one or more <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">KeyFrames</code>. Each <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">KeyFrame</code> is executed sequentially at a specified time interval. It inherits from <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Animation</code>.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-blue-600 border-b-2 border-gray-200 pb-3 mb-6 mt-8 sm:text-3xl md:mt-10">3. Object-Oriented Programming (OOP) with Interfaces</h2>
+        <p class="mb-4 text-sm sm:text-base">Interfaces are a cornerstone of OOP in Java, promoting abstraction, flexibility, and extensibility.</p>
+
+        <h3 class="text-xl font-semibold text-blue-500 mb-3 sm:text-2xl">Key Concepts:</h3>
+        <ul class="list-disc ml-6 space-y-2 text-sm sm:text-base">
+            <li><strong class="text-blue-700">What is an Interface?</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li>A blueprint of a class. It defines a contract specifying a set of methods that a class implementing the interface must provide.</li>
+                    <li>It only contains method signatures (abstract methods) and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">static final</code> constants. As of Java 8, interfaces can have default and static methods.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Purpose of Interfaces:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Abstraction:</strong> Hides the implementation details, exposing only the necessary methods.</li>
+                    <li><strong class="font-medium">Polymorphism:</strong> Allows objects of different classes to be treated as objects of a common interface type.</li>
+                    <li><strong class="font-medium">Multiple Inheritance (of Type):</strong> A class can implement multiple interfaces, achieving a form of multiple inheritance for behavior (though not state).</li>
+                    <li><strong class="font-medium">Loose Coupling:</strong> Promotes decoupling between components, making the system easier to extend and modify.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Example: Payment Gateway System (Real-life Scenario)</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Problem:</strong> Integrating multiple payment providers (e.g., PayPal, Stripe, Credit Card), each with unique APIs and logic.</li>
+                    <li><strong class="font-medium">Solution using Interfaces:</strong>
+                        <ul class="list-square ml-6 mt-1 space-y-1 text-xs">
+                            <li><strong class="font-medium">Define <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PaymentProcessor</code> Interface:</strong> You create a <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PaymentProcessor</code> interface that defines the basic methods for processing payments, such as <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">processPayment</code> and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">refundPayment</code>.
+<pre class="bg-gray-100 code-block p-4 rounded-md mt-2 mb-4 overflow-x-auto text-sm"><code class="language-java">public interface PaymentProcessor {
+    boolean processPayment(double amount, String accountDetails);
+    boolean refundPayment(double amount, String transactionId);
+}</code></pre>
+                            </li>
+                            <li><strong class="font-medium">Implementations:</strong> Each payment provider (e.g., <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PayPalPaymentProcessor</code>, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">StripePaymentProcessor</code>) implements this <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PaymentProcessor</code> interface, ensuring that the required methods for processing payments and refunds are defined.
+<pre class="bg-gray-100 code-block p-4 rounded-md mt-2 mb-4 overflow-x-auto text-sm"><code class="language-java">public class PayPalPaymentProcessor implements PaymentProcessor {
+    public boolean processPayment(double amount, String accountDetails) {
+        // PayPal-specific logic to process payment
+        System.out.println("Processing payment with PayPal for " + amount);
+        return true;
+    }
+    public boolean refundPayment(double amount, String transactionId) {
+        // PayPal-specific logic to process a refund
+        System.out.println("Refunding payment with PayPal for " + amount);
+        return true;
+    }
+}</code></pre>
+<pre class="bg-gray-100 code-block p-4 rounded-md mt-2 mb-4 overflow-x-auto text-sm"><code class="language-java">public class StripePaymentProcessor implements PaymentProcessor {
+    public boolean processPayment(double amount, String accountDetails) {
+        // Stripe-specific logic to process payment
+        System.out.println("Processing payment with Stripe for " + amount);
+        return true;
+    }
+    public boolean refundPayment(double amount, String transactionId) {
+        // Stripe-specific logic to process a refund
+        System.out.println("Refunding payment with Stripe for " + amount);
+        return true;
+    }
+}</code></pre>
+                            </li>
+                            <li><strong class="font-medium"><code>PaymentService</code> Class:</strong> The main application doesn't need to worry about the specific details of each payment provider. It simply uses the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PaymentProcessor</code> interface to interact with any payment method.
+<pre class="bg-gray-100 code-block p-4 rounded-md mt-2 mb-4 overflow-x-auto text-sm"><code class="language-java">public class PaymentService {
+    private PaymentProcessor paymentProcessor;
+
+    // Constructor injection to decide the payment method dynamically
+    public PaymentService(PaymentProcessor paymentProcessor) {
+        this.paymentProcessor = paymentProcessor;
+    }
+    public void makePayment(double amount, String accountDetails) {
+        if(paymentProcessor.processPayment(amount, accountDetails)) {
+            System.out.println("Payment successful!");
+        } else {
+            System.out.println("Payment failed.");
+        }
+    }
+}</code></pre>
+                            </li>
+                            <li><strong class="font-medium">Flexibility:</strong> The <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Main</code> class can dynamically choose which <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PaymentProcessor</code> implementation to use without changing the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PaymentService</code> logic.
+<pre class="bg-gray-100 code-block p-4 rounded-md mt-2 mb-4 overflow-x-auto text-sm"><code class="language-java">public class Main {
+    public static void main(String[] args) {
+        PaymentProcessor paypalProcessor = new PayPalPaymentProcessor();
+        PaymentService paymentService = new PaymentService(paypalProcessor);
+        paymentService.makePayment(100.0, "paypal_account_details");
+        // If you want to switch to Stripe, simply change the implementation:
+        PaymentProcessor stripeProcessor = new StripePaymentProcessor();
+        paymentService = new PaymentService(stripeProcessor);
+        paymentService.makePayment(50.0, "stripe_account_details");
+    }
+}</code></pre>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong class="font-medium">Benefits (as demonstrated by the Payment Gateway example):</strong>
+                        <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                            <li><strong class="font-medium">Decoupling:</strong> The application doesn't need to know the specifics of how each payment provider works. It only relies on the interface, making the system easier to extend and modify.</li>
+                            <li><strong class="font-medium">Flexibility:</strong> You can easily add new payment processors (e.g., a new provider like Square or Apple Pay) without changing the core business logic. You just need to implement the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">PaymentProcessor</code> interface.</li>
+                            <li><strong class="font-medium">Testability:</strong> Interfaces make it easier to mock or stub payment providers in unit tests, ensuring that your business logic can be tested independently from external services.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Exercise: Vehicle Rental System:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Objective:</strong> The goal of this exercise is to practice using interfaces in object-oriented programming to create a flexible and scalable vehicle rental system.</li>
+                    <li><strong class="font-medium">Task:</strong>
+                        <ul class="list-square ml-6 mt-1 space-y-1 text-xs">
+                            <li>Create an interface named <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Vehicle</code> with the following methods: <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">double calculateRentalCost(int days)</code> and <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">void displayInfo()</code>.</li>
+                            <li>Implement this interface in at least three different vehicle types (e.g., Car, Bike, Truck).</li>
+                            <li>Create a <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">RentalService</code> class that interacts with the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Vehicle</code> interface. The class should have a method that displays the rental details, including the vehicle's information and the rental cost for a specified number of days.</li>
+                            <li>Demonstrate flexibility by simulating rentals with different vehicle types in a <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Main</code> class. Ensure that the system can work with any new vehicle type that implements the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Vehicle</code> interface without needing to modify the core logic in <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">RentalService</code>.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-blue-600 border-b-2 border-gray-200 pb-3 mb-6 mt-8 sm:text-3xl md:mt-10">4. Multithreading (Class Activity)</h2>
+        <p class="mb-4 text-sm sm:text-base">Multithreading allows multiple parts of a program to execute concurrently, improving responsiveness and efficiency.</p>
+
+        <h3 class="text-xl font-semibold text-blue-500 mb-3 sm:text-2xl">Key Concepts:</h3>
+        <ul class="list-disc ml-6 space-y-2 text-sm sm:text-base">
+            <li><strong class="text-blue-700">Thread vs. Process:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Process:</strong> An independent execution environment with its own memory space, resources, and typically runs in isolation.</li>
+                    <li><strong class="font-medium">Thread:</strong> A lightweight unit of execution within a process. Threads within the same process share the same memory space and resources, making inter-thread communication more efficient.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Thread Lifecycle States:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">New:</strong> A thread that has been created but not yet started.</li>
+                    <li><strong class="font-medium">Runnable:</strong> A thread that is ready to run and waiting for the code-block. It might be running or waiting to be scheduled.</li>
+                    <li><strong class="font-medium">Running:</strong> The thread is currently executing on the code-block.</li>
+                    <li><strong class="font-medium">Waiting/Blocked:</strong> The thread is temporarily inactive, waiting for a resource (e.g., I/O completion, a lock, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">sleep()</code> duration, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">join()</code> completion).</li>
+                    <li><strong class="font-medium">Terminated:</strong> The thread has completed its execution.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Creating Threads:</strong>
+                <ol class="list-decimal ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Extending <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Thread</code> Class:</strong>
+                        <ul class="list-square ml-6 mt-1 space-y-1 text-xs">
+                            <li>Create a class that extends <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">java.lang.Thread</code>.</li>
+                            <li>Override the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">run()</code> method with the code to be executed by the thread.</li>
+                            <li>Create an instance of your class and call its <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">start()</code> method to begin execution.</li>
+                            <li><strong class="font-medium">Important:</strong> Calling <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">run()</code> directly will execute the code in the current thread, not a new thread. You <em>must</em> call <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">start()</code> to create and launch a new thread.</li>
+                        </ul>
+                    </li>
+                    <li><strong class="font-medium">Implementing <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Runnable</code> Interface:</strong>
+                        <ul class="list-square ml-6 mt-1 space-y-1 text-xs">
+                            <li>Create a class that implements the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">java.lang.Runnable</code> interface.</li>
+                            <li>Override the <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">run()</code> method with the code to be executed.</li>
+                            <li>Create an instance of your <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Runnable</code> implementation.</li>
+                            <li>Create a <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Thread</code> object, passing your <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Runnable</code> instance to its constructor: <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Thread thread = new Thread(myRunnableInstance);</code>.</li>
+                            <li>Call <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">thread.start()</code>.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+            <li><strong class="text-blue-700">Why <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Runnable</code> is Preferred (for most cases):</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><strong class="font-medium">Separation of Concerns:</strong> It separates the task (what the thread does) from the thread management itself. Your class can extend another class and still be a thread.</li>
+                    <li><strong class="font-medium">Resource Sharing:</strong> Multiple threads can share the same <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Runnable</code> object, which is useful for tasks that operate on shared data.</li>
+                    <li><strong class="font-medium">Flexibility:</strong> Promotes better design and allows for easier integration with thread pools.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700"><code>sleep()</code> Method:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Thread.sleep(long milliseconds)</code>: Causes the currently executing thread to pause for a specified duration. Useful for simulating delays or controlling the pace of execution.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Thread Synchronization (Briefly):</strong> When multiple threads access shared resources, synchronization mechanisms (like <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">synchronized</code> blocks/methods, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Lock</code> objects, <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Semaphore</code>, etc.) are needed to prevent data corruption and ensure thread safety. (Not detailed in the provided content but crucial for multithreading).</li>
+            <li><strong class="text-blue-700"><code>interrupt()</code> Method:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li>Used to request a thread to stop its current activity. It sets the thread's interrupted status. It does <em>not</em> immediately stop the thread; the interrupted thread must gracefully handle the interruption by checking its interrupted status (e.g., <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Thread.currentThread().isInterrupted()</code>) or by catching <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">InterruptedException</code>.</li>
+                </ul>
+            </li>
+            <li><strong class="text-blue-700">Thread Priority:</strong>
+                <ul class="list-circle ml-6 mt-1 space-y-1 text-sm">
+                    <li>Threads have priorities ranging from <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Thread.MIN_PRIORITY</code> (1) to <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Thread.MAX_PRIORITY</code> (10), with <code class="bg-blue-50 code-block text-blue-800 px-1 rounded">Thread.NORM_PRIORITY</code> (5) as the default.</li>
+                    <li><code class="bg-blue-50 code-block text-blue-800 px-1 rounded">setPriority()</code>: Can be used to suggest to the JVM's thread scheduler which threads should get CPU time more often.</li>
+                    <li><strong class="font-medium">Note:</strong> Thread scheduling is OS-dependent, so priorities are hints, not guarantees. Higher priority threads are <em>more likely</em> to run first, but actual execution can vary.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Quiz Section -->
+        <section id="quiz-section" class="mt-12 p-6 bg-blue-50 rounded-lg shadow-inner">
+            <h2 class="text-3xl font-bold text-blue-700 mb-6 border-b-2 border-blue-300 pb-3">Java Exam Quiz</h2>
+
+            <div id="quiz-start" class="text-center">
+                <div class="mb-4">
+                    <label for="num-questions" class="block text-lg font-medium text-gray-700 mb-2">Number of Questions (1-40):</label>
+                    <input type="number" id="num-questions" value="10" min="1" max="40" class="w-24 p-2 border border-gray-300 rounded-md text-center text-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button id="start-quiz-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105">Start Quiz</button>
+            </div>
+
+            <div id="quiz-container" class="hidden">
+                <p class="text-xl font-semibold mb-4" id="question-counter">Question 1/10</p>
+                <p class="text-xl font-bold mb-6" id="question-text"></p>
+                <div id="options-container" class="space-y-3">
+                    <!-- Options will be loaded here -->
+                </div>
+                <div class="flex justify-between mt-8">
+                    <button id="prev-question-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 opacity-50 cursor-not-allowed" disabled>Previous</button>
+                    <button id="next-question-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300">Next</button>
+                    <button id="submit-quiz-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 hidden">Submit Quiz</button>
+                </div>
+            </div>
+
+            <div id="quiz-results" class="hidden text-center mt-8">
+                <h3 class="text-3xl font-bold text-blue-700 mb-4">Quiz Results</h3>
+                <p class="text-2xl mb-6">Your Score: <span id="score-display" class="font-extrabold text-green-700"></span></p>
+                <button id="retake-quiz-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105">Retake Quiz</button>
+                <div id="answer-review" class="mt-8 text-left max-h-96 overflow-y-auto p-4 border border-gray-200 rounded-md bg-white">
+                    <h4 class="text-xl font-semibold mb-4">Review Your Answers:</h4>
+                    <!-- Answer review will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- Settings Logic ---
+        const body = document.getElementById('main-body');
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsModal = document.getElementById('settings-modal');
+        const closeSettingsBtn = document.getElementById('close-settings-btn');
+        const fontSizeSlider = document.getElementById('font-size-slider');
+        const currentFontSizeSpan = document.getElementById('current-font-size');
+        const themeButtons = document.querySelectorAll('[data-theme]');
+
+        settingsBtn.addEventListener('click', () => {
+            settingsModal.classList.remove('hidden');
+        });
+
+        closeSettingsBtn.addEventListener('click', () => {
+            settingsModal.classList.add('hidden');
+        });
+
+        fontSizeSlider.addEventListener('input', (event) => {
+            const fontSize = parseFloat(event.target.value);
+            body.style.setProperty('--base-font-size', `${fontSize}rem`);
+            if (fontSize === 0.8) {
+                currentFontSizeSpan.textContent = 'Small';
+            } else if (fontSize === 1.0) {
+                currentFontSizeSpan.textContent = 'Normal';
+            } else {
+                currentFontSizeSpan.textContent = 'Large';
+            }
+        });
+
+        themeButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const theme = event.target.dataset.theme;
+                body.className = ''; // Clear existing theme classes
+                body.classList.add('font-sans', 'leading-relaxed', 'p-5', `theme-${theme}`);
+                // Re-apply base text color from the selected theme, as Tailwind's default text-gray-800 might override
+                if (theme === 'dark') {
+                    body.classList.add('text-gray-100');
+                } else {
+                    body.classList.add('text-gray-800');
+                }
+            });
+        });
+
+        // --- Quiz Logic ---
+        const allQuestions = [
+            // JavaFX Basics (10 questions)
+            {
+                question: "Which class is the primary entry point for a JavaFX application?",
+                options: ["JFrame", "Application", "Stage", "Scene"],
+                correctAnswer: "Application"
+            },
+            {
+                question: "In JavaFX, what represents the main window of an application?",
+                options: ["Scene", "Pane", "Stage", "Node"],
+                correctAnswer: "Stage"
+            },
+            {
+                question: "Which JavaFX component acts as a container for all UI elements and is placed onto a Stage?",
+                options: ["Node", "Pane", "Scene", "Control"],
+                correctAnswer: "Scene"
+            },
+            {
+                question: "Which layout pane arranges nodes in a single horizontal row?",
+                options: ["VBox", "GridPane", "StackPane", "HBox"],
+                correctAnswer: "HBox"
+            },
+            {
+                question: "What is the base class for all graphical elements in the JavaFX scene graph?",
+                options: ["Control", "Parent", "Shape", "Node"],
+                correctAnswer: "Node"
+            },
+            {
+                question: "Which UI control is used for single-line text input?",
+                options: ["TextArea", "Label", "TextField", "Button"],
+                correctAnswer: "TextField"
+            },
+            {
+                question: "Which class is used to load images from files or URLs in JavaFX?",
+                options: ["ImageView", "ImageLoader", "Image", "Graphics"],
+                correctAnswer: "Image"
+            },
+            {
+                question: "A concept in JavaFX where a target object's property automatically updates when a source object's property changes is known as:",
+                options: ["Event Handling", "Delegation Model", "Binding Property", "Animation"],
+                correctAnswer: "Binding Property"
+            },
+            {
+                question: "Which pane places nodes on top of each other, centered?",
+                options: ["FlowPane", "BorderPane", "StackPane", "GridPane"],
+                correctAnswer: "StackPane"
+            },
+            {
+                question: "Which JavaFX control allows selection of a single item from a group and typically uses a ToggleGroup?",
+                options: ["CheckBox", "ComboBox", "RadioButton", "ListView"],
+                correctAnswer: "RadioButton"
+            },
+            // Event-Driven Programming and Animations (10 questions)
+            {
+                question: "In event-driven programming, what is the term for the GUI component that generates an event?",
+                options: ["Event Handler", "Event Listener", "Event Object", "Event Source Object"],
+                correctAnswer: "Event Source Object"
+            },
+            {
+                question: "Which method is typically invoked on a listener object to process an event in JavaFX?",
+                options: ["processEvent()", "handleEvent()", "run()", "handle()"],
+                correctAnswer: "handle()"
+            },
+            {
+                question: "What is the primary interface for defining event handlers in JavaFX?",
+                options: ["ActionListener", "EventListener", "EventHandler<T>", "Consumer<T>"],
+                correctAnswer: "EventHandler<T>"
+            },
+            {
+                question: "Which type of event is fired when a Button is clicked?",
+                options: ["MouseEvent", "KeyEvent", "ActionEvent", "WindowEvent"],
+                correctAnswer: "ActionEvent"
+            },
+            {
+                question: "What is a local class without a name, defined and instantiated in a single step, typically used for quick, one-time interface implementations?",
+                options: ["Named Inner Class", "Static Nested Class", "Lambda Expression", "Anonymous Inner Class"],
+                correctAnswer: "Anonymous Inner Class"
+            },
+            {
+                question: "What new feature in Java 8 allows for a concise syntax to implement functional interfaces?",
+                options: ["Anonymous Inner Classes", "Generics", "Lambda Expressions", "Annotations"],
+                correctAnswer: "Lambda Expressions"
+            },
+            {
+                question: "Which interface should be implemented by a listener for observable properties to be notified of value changes without explicitly providing old/new values?",
+                options: ["ChangeListener", "ObservableListener", "InvalidationListener", "PropertyListener"],
+                correctAnswer: "InvalidationListener"
+            },
+            {
+                question: "Which JavaFX class provides the core functionality for all animations, including methods like pause(), play(), and stop()?",
+                options: ["PathTransition", "Timeline", "Animation", "FadeTransition"],
+                correctAnswer: "Animation"
+            },
+            {
+                question: "To animate a node along a specified path (a Shape), which JavaFX animation class would you use?",
+                options: ["FadeTransition", "Timeline", "PathTransition", "TranslateTransition"],
+                correctAnswer: "PathTransition"
+            },
+            {
+                question: "Which animation class is most general and allows programming any animation using KeyFrames?",
+                options: ["FadeTransition", "Animation", "PathTransition", "Timeline"],
+                correctAnswer: "Timeline"
+            },
+            // OOP with Interfaces (10 questions)
+            {
+                question: "What is a blueprint of a class that defines a contract for methods a class must implement?",
+                options: ["Abstract Class", "Concrete Class", "Interface", "Superclass"],
+                correctAnswer: "Interface"
+            },
+            {
+                question: "Which of the following is a key purpose of using interfaces in Java?",
+                options: ["Enforcing strict inheritance", "Preventing polymorphism", "Promoting tight coupling", "Achieving abstraction and loose coupling"],
+                correctAnswer: "Achieving abstraction and loose coupling"
+            },
+            {
+                question: "Can a Java class implement multiple interfaces?",
+                options: ["No, only one interface per class", "Yes, unlimited number of interfaces", "Yes, but only if they have no abstract methods", "Only if it's an abstract class"],
+                correctAnswer: "Yes, unlimited number of interfaces"
+            },
+            {
+                question: "What benefit do interfaces provide in a payment processing system with multiple providers?",
+                options: ["Centralized logic for all providers", "Direct access to provider-specific APIs", "Decoupling and flexibility to add new providers easily", "Reduced need for error handling"],
+                correctAnswer: "Decoupling and flexibility to add new providers easily"
+            },
+            {
+                question: "In the Payment Gateway example, what is the role of the `PaymentService` class?",
+                options: ["To define payment methods", "To implement specific payment provider logic", "To interact with the `PaymentProcessor` interface, abstracting provider details", "To handle database interactions for payments"],
+                correctAnswer: "To interact with the `PaymentProcessor` interface, abstracting provider details"
+            },
+            {
+                question: "Prior to Java 8, what kind of methods could an interface contain besides `static final` constants?",
+                options: ["Concrete methods", "Default methods", "Abstract methods", "Static methods"],
+                correctAnswer: "Abstract methods"
+            },
+            {
+                question: "What concept allows objects of different classes to be treated as objects of a common interface type?",
+                options: ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+                correctAnswer: "Polymorphism"
+            },
+            {
+                question: "If you want to ensure a set of classes provides a common set of behaviors without dictating their internal state, what OOP concept should you use?",
+                options: ["Abstract Class", "Concrete Class", "Interface", "Inheritance"],
+                correctAnswer: "Interface"
+            },
+            {
+                question: "What is the advantage of 'constructor injection' for a service like `PaymentService` when using interfaces?",
+                options: ["It makes the service singleton", "It couples the service to a specific implementation", "It allows dynamic swapping of implementations", "It simplifies method overriding"],
+                correctAnswer: "It allows dynamic swapping of implementations"
+            },
+            {
+                question: "Which of the following is NOT a benefit of using interfaces?",
+                options: ["Decoupling", "Flexibility", "Testability", "Tight coupling"],
+                correctAnswer: "Tight coupling"
+            },
+            // Multithreading (10 questions)
+            {
+                question: "What is a lightweight unit of execution that shares the same memory space and resources within a process?",
+                options: ["Process", "Application", "Thread", "Program"],
+                correctAnswer: "Thread"
+            },
+            {
+                question: "Which method must you call to start a new thread that was created by extending the `Thread` class?",
+                options: ["run()", "execute()", "start()", "init()"],
+                correctAnswer: "start()"
+            },
+            {
+                question: "When would you prefer implementing the `Runnable` interface over extending the `Thread` class for multithreading?",
+                options: ["When your class needs to inherit from another class", "When you only have a single task to perform", "When you want to prevent resource sharing", "When you need strict control over thread lifecycle"],
+                correctAnswer: "When your class needs to inherit from another class"
+            },
+            {
+                question: "What is the state of a thread that has been created but not yet started?",
+                options: ["Runnable", "Running", "New", "Waiting"],
+                correctAnswer: "New"
+            },
+            {
+                question: "Which method is used to pause the execution of the currently running thread for a specified duration?",
+                options: ["wait()", "pause()", "sleep()", "stop()"],
+                correctAnswer: "sleep()"
+            },
+            {
+                question: "What is the state of a thread when it is ready to run and waiting for the CPU?",
+                options: ["New", "Blocked", "Runnable", "Terminated"],
+                correctAnswer: "Runnable"
+            },
+            {
+                question: "If you call the `run()` method directly on a `Thread` object instead of `start()`, what happens?",
+                options: ["A new thread is created and starts executing.", "The code executes in the current thread, not a new one.", "The program crashes.", "The thread goes into a waiting state."],
+                correctAnswer: "The code executes in the current thread, not a new one."
+            },
+            {
+                question: "What is the purpose of the `interrupt()` method in multithreading?",
+                options: ["To immediately terminate a thread.", "To set a flag requesting the thread to stop gracefully.", "To make a thread wait indefinitely.", "To change a thread's priority."],
+                correctAnswer: "To set a flag requesting the thread to stop gracefully."
+            },
+            {
+                question: "What is the default priority for a Java thread?",
+                options: ["1", "10", "5", "Undefined"],
+                correctAnswer: "5"
+            },
+            {
+                question: "Which of these is NOT a typical reason for a thread to enter a 'Waiting/Blocked' state?",
+                options: ["Waiting for I/O completion", "Acquiring a lock on a shared resource", "Calling `Thread.sleep()`", "Executing complex calculations"],
+                correctAnswer: "Executing complex calculations"
+            },
+            // Additional General Java/OOP Questions (10 questions)
+            {
+                question: "What is the process of hiding the internal implementation details of an object and exposing only the necessary functionalities?",
+                options: ["Inheritance", "Polymorphism", "Encapsulation", "Abstraction"],
+                correctAnswer: "Encapsulation"
+            },
+            {
+                question: "Which keyword is used to acquire a lock on an object and ensure that only one thread can execute a block of code at a time?",
+                options: ["volatile", "transient", "synchronized", "static"],
+                correctAnswer: "synchronized"
+            },
+            {
+                question: "What does the `final` keyword signify when applied to a variable in Java?",
+                options: ["The variable can only be accessed by one thread.", "The variable's value can be changed once.", "The variable's value cannot be changed after initialization.", "The variable is a static constant."],
+                correctAnswer: "The variable's value cannot be changed after initialization."
+            },
+            {
+                question: "Which exception is typically thrown when a thread is interrupted while it's sleeping, waiting, or otherwise blocked?",
+                options: ["NullPointerException", "IllegalStateException", "InterruptedException", "RuntimeException"],
+                correctAnswer: "InterruptedException"
+            },
+            {
+                question: "In Java, what is a functional interface?",
+                options: ["An interface with no methods.", "An interface with only default methods.", "An interface with a single abstract method.", "An interface that can be instantiated directly."],
+                correctAnswer: "An interface with a single abstract method."
+            },
+            {
+                question: "Which JavaFX class is used to display video and audio media?",
+                options: ["MediaLoader", "MediaPlayer", "MediaView", "MediaHandler"],
+                correctAnswer: "MediaView"
+            },
+            {
+                question: "What is the term for a class that contains another class as its member?",
+                options: ["Nested class", "Outer class", "Helper class", "Wrapper class"],
+                correctAnswer: "Nested class"
+            },
+            {
+                question: "Which `KeyEvent` constant represents the 'Enter' key?",
+                options: ["KEY_ENTER", "ENTER", "RETURN", "ENTER_KEY"],
+                correctAnswer: "ENTER" // According to the provided slide for KeyEvent.
+            },
+            {
+                question: "What is the primary difference between `ScrollPane` and `ScrollBar` in JavaFX?",
+                options: ["`ScrollPane` is for text, `ScrollBar` is for images.", "`ScrollPane` wraps content to provide scrolling, `ScrollBar` is a standalone control.", "They are synonyms.", "`ScrollBar` is deprecated."],
+                correctAnswer: "`ScrollPane` wraps content to provide scrolling, `ScrollBar` is a standalone control."
+            },
+            {
+                question: "Which of the following is NOT a subclass of `Shape` in JavaFX?",
+                options: ["Line", "Circle", "Text", "Button"],
+                correctAnswer: "Button"
+            }
+        ];
+
+        let currentQuizQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let quizStarted = false;
+        let quizFinished = false;
+        let numberOfQuestionsToAsk = 10; // Default
+
+        // DOM elements
+        const quizStartSection = document.getElementById('quiz-start');
+        const quizContainer = document.getElementById('quiz-container');
+        const quizResultsSection = document.getElementById('quiz-results');
+        const numQuestionsInput = document.getElementById('num-questions');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const questionCounter = document.getElementById('question-counter');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const prevQuestionBtn = document.getElementById('prev-question-btn');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const submitQuizBtn = document.getElementById('submit-quiz-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const retakeQuizBtn = document.getElementById('retake-quiz-btn');
+        const answerReview = document.getElementById('answer-review');
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function startQuiz() {
+            numberOfQuestionsToAsk = parseInt(numQuestionsInput.value);
+            if (isNaN(numberOfQuestionsToAsk) || numberOfQuestionsToAsk < 1 || numberOfQuestionsToAsk > allQuestions.length) {
+                numberOfQuestionsToAsk = Math.min(10, allQuestions.length); // Default to 10 or max available
+                numQuestionsInput.value = numberOfQuestionsToAsk;
+            }
+
+            shuffleArray(allQuestions);
+            currentQuizQuestions = allQuestions.slice(0, numberOfQuestionsToAsk);
+
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = Array(numberOfQuestionsToAsk).fill(null); // Initialize with null for unanswered questions
+            quizStarted = true;
+            quizFinished = false;
+
+            quizStartSection.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            quizResultsSection.classList.add('hidden');
+
+            displayQuestion();
+            updateNavigationButtons();
+        }
+
+        function displayQuestion() {
+            if (currentQuestionIndex >= currentQuizQuestions.length || currentQuestionIndex < 0) {
+                showResults();
+                return;
+            }
+
+            const questionData = currentQuizQuestions[currentQuestionIndex];
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1}/${numberOfQuestionsToAsk}`;
+            questionText.textContent = questionData.question;
+            optionsContainer.innerHTML = '';
+
+            questionData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('quiz-option');
+                button.dataset.option = option; // Store option value
+
+                // Mark if previously selected
+                if (userAnswers[currentQuestionIndex] === option) {
+                    button.classList.add('selected');
+                }
+
+                button.addEventListener('click', () => selectOption(option, button));
+                optionsContainer.appendChild(button);
+            });
+
+            updateNavigationButtons();
+        }
+
+        function selectOption(selectedOption, clickedButton) {
+            userAnswers[currentQuestionIndex] = selectedOption;
+
+            // Remove 'selected' class from all options for the current question
+            optionsContainer.querySelectorAll('.quiz-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Add 'selected' class to the clicked option
+            if (clickedButton) {
+                clickedButton.classList.add('selected');
+            }
+        }
+
+        function updateNavigationButtons() {
+            prevQuestionBtn.disabled = currentQuestionIndex === 0;
+            prevQuestionBtn.classList.toggle('opacity-50', currentQuestionIndex === 0);
+            prevQuestionBtn.classList.toggle('cursor-not-allowed', currentQuestionIndex === 0);
+            prevQuestionBtn.classList.toggle('hover:bg-gray-600', currentQuestionIndex !== 0);
+
+            if (currentQuestionIndex === numberOfQuestionsToAsk - 1) {
+                nextQuestionBtn.classList.add('hidden');
+                submitQuizBtn.classList.remove('hidden');
+            } else {
+                nextQuestionBtn.classList.remove('hidden');
+                submitQuizBtn.classList.add('hidden');
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            displayQuestion();
+        }
+
+        function prevQuestion() {
+            currentQuestionIndex--;
+            displayQuestion();
+        }
+
+        function showResults() {
+            quizStarted = false;
+            quizFinished = true;
+            quizContainer.classList.add('hidden');
+            quizResultsSection.classList.remove('hidden');
+
+            calculateScore();
+            displayAnswerReview();
+        }
+
+        function calculateScore() {
+            score = 0;
+            currentQuizQuestions.forEach((questionData, index) => {
+                if (userAnswers[index] === questionData.correctAnswer) {
+                    score++;
+                }
+            });
+            scoreDisplay.textContent = `${score}/${numberOfQuestionsToAsk}`;
+        }
+
+        function displayAnswerReview() {
+            answerReview.innerHTML = '<h4 class="text-xl font-semibold mb-4">Review Your Answers:</h4>';
+            currentQuizQuestions.forEach((questionData, index) => {
+                const userChoice = userAnswers[index];
+                const isCorrect = (userChoice === questionData.correctAnswer);
+
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('mb-4', 'p-3', 'rounded-md', isCorrect ? 'bg-green-50' : 'bg-red-50', 'border', isCorrect ? 'border-green-200' : 'border-red-200');
+
+                questionDiv.innerHTML = `
+                    <p class="font-semibold text-base mb-2">${index + 1}. ${questionData.question}</p>
+                    <ul class="list-none p-0 ml-0 text-sm">
+                        ${questionData.options.map(option => `
+                            <li class="mb-1 ${option === questionData.correctAnswer ? 'text-green-700 font-bold' : ''} ${option === userChoice && !isCorrect ? 'text-red-700 font-bold' : ''}">
+                                ${option === questionData.correctAnswer ? '&#10003; ' : (option === userChoice && !isCorrect ? '&#10007; ' : '')} ${option}
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <p class="mt-2 text-xs italic ${isCorrect ? 'text-green-600' : 'text-red-600'}">
+                        ${isCorrect ? 'Correct!' : `Your answer: ${userChoice || 'Not answered'}. Correct answer: ${questionData.correctAnswer}`}
+                    </p>
+                `;
+                answerReview.appendChild(questionDiv);
+            });
+        }
+
+        function retakeQuiz() {
+            quizResultsSection.classList.add('hidden');
+            quizStartSection.classList.remove('hidden');
+            // Reset quiz variables
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            quizStarted = false;
+            quizFinished = false;
+            numQuestionsInput.value = 10; // Reset input field to default
+        }
+
+        // Event Listeners for Quiz
+        startQuizBtn.addEventListener('click', startQuiz);
+        nextQuestionBtn.addEventListener('click', nextQuestion);
+        prevQuestionBtn.addEventListener('click', prevQuestion);
+        submitQuizBtn.addEventListener('click', showResults);
+        retakeQuizBtn.addEventListener('click', retakeQuiz);
+
+    </script>
+</body>
+</html>
